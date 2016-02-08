@@ -1,2 +1,2 @@
 # Mouse-Point-Viewer
-A simple desktop application to know the coordinates relatively to any window on the screen.
+A very simple desktop application to know the coordinates relatively to any visible window on the screen.
