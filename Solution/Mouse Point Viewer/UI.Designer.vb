@@ -194,7 +194,7 @@ Partial Class Main
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Window
-        Me.ClientSize = New System.Drawing.Size(404, 214)
+        Me.ClientSize = New System.Drawing.Size(404, 217)
         Me.Controls.Add(Me.Label_refresh_ms)
         Me.Controls.Add(Me.Label_refresh)
         Me.Controls.Add(Me.NumericUpDown_Refresh)
@@ -213,9 +213,10 @@ Partial Class Main
         Me.Controls.Add(Me.Label_Hwnd)
         Me.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MinimumSize = New System.Drawing.Size(220, 256)
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Mouse Point Viewer - By Elektro"
+        Me.Text = "Mouse Point Viewer - By ElektroStudios"
         CType(Me.NumericUpDown_Refresh, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
