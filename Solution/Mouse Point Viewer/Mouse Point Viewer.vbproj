@@ -105,6 +105,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -116,9 +117,21 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PropertyGridExtensions.vb" />
-    <Compile Include="MouseCoordinatesInfo.vb" />
-    <Compile Include="NativeMethods.vb" />
+    <Compile Include="Helpers\WindowHelper.vb" />
+    <Compile Include="PropertyInfos\PixelColorPropertyInfo.vb" />
+    <Compile Include="PropertyInfos\ProcessPropertyInfo.vb" />
+    <Compile Include="PropertyInfos\ClassNamePropertyInfo.vb" />
+    <Compile Include="Extensions\PropertyGridExtensions.vb" />
+    <Compile Include="PropertyInfos\AllInfoContainer.vb" />
+    <Compile Include="PropertyInfos\PointPropertyInfo.vb" />
+    <Compile Include="PropertyInfos\RectanglePropertyInfo.vb" />
+    <Compile Include="PropertyInfos\PointsPropertyInfo.vb" />
+    <Compile Include="PropertyInfos\WindowBoundsPropertyContainer.vb" />
+    <Compile Include="PropertyInfos\WindowHandlePropertyInfo.vb" />
+    <Compile Include="PropertyInfos\TitlePropertyInfo.vb" />
+    <Compile Include="UITypeEditors\PixelColorEditor.vb" />
+    <Compile Include="Win32\Constants.vb" />
+    <Compile Include="Win32\NativeMethods.vb" />
     <Compile Include="UI.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -142,7 +155,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="WebColorConverter.vb" />
+    <Compile Include="TypeConverters\WebColorConverter.vb" />
+    <Compile Include="Win32\Win32.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI.resx">

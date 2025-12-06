@@ -9,6 +9,7 @@ Option Infer Off
 #Region " Imports "
 
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Globalization
 
 #End Region
@@ -17,6 +18,7 @@ Friend NotInheritable Class WebColorConverter : Inherits ColorConverter
 
     Friend Shared ReadOnly KnownColorsDict As Dictionary(Of Integer, String)
 
+    <DebuggerStepThrough>
     Public Overrides Function ConvertTo(context As ITypeDescriptorContext,
                                         culture As CultureInfo,
                                         value As Object,
@@ -47,9 +49,9 @@ Friend NotInheritable Class WebColorConverter : Inherits ColorConverter
         Return MyBase.ConvertTo(context, culture, value, destinationType)
     End Function
 
-
+    <DebuggerStepThrough>
     Public Overrides Function ConvertFrom(context As ITypeDescriptorContext,
-                                          culture As Globalization.CultureInfo,
+                                          culture As CultureInfo,
                                           value As Object) As Object
 
         Dim s As String = TryCast(value, String)
