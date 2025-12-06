@@ -26,7 +26,7 @@ winforms
 
 Newest version:
 
-![](Images/Screenshot_02.png)
+![](Images/Screenshot_03.png)
 
 ![](Images/Mouse%20Point%20Viewer.gif)
 
