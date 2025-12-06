@@ -13,7 +13,7 @@ Imports System.Diagnostics
 #End Region
 
 <TypeConverter(GetType(ExpandableObjectConverter))>
-Friend NotInheritable Class TitlePropertyInfo
+Friend NotInheritable Class CaptionPropertyInfo
 
     <DisplayName("Text")>
     <[ReadOnly](True)>

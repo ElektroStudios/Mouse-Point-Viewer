@@ -15,28 +15,27 @@ Imports System.Text
 
 Friend NotInheritable Class AllInfoContainer
 
-    <DisplayName("Title")>
-    <[ReadOnly](True)>
-    Public Property Title As TitlePropertyInfo
-
-    <DisplayName("Class")>
-    <[ReadOnly](True)>
-    Public Property ClassName As ClassNamePropertyInfo
-
     <DisplayName("Process")>
     <[ReadOnly](True)>
     Public Property Process As ProcessPropertyInfo
+
+    <DisplayName("Window Caption")>
+    <[ReadOnly](True)>
+    Public Property Caption As CaptionPropertyInfo
+
+    <DisplayName("Window Class")>
+    <[ReadOnly](True)>
+    Public Property ClassName As ClassNamePropertyInfo
 
     <DisplayName("Window Handle")>
     <[ReadOnly](True)>
     Public Property WindowHandle As WindowHandlePropertyInfo
 
-
     <DisplayName("Window Bounds")>
     <[ReadOnly](True)>
     Public Property WindowBounds As WindowBoundsPropertyContainer
 
-    <DisplayName("Point")>
+    <DisplayName("Mouse Point")>
     <[ReadOnly](True)>
     Public Property Point As PointPropertyContainer
 
@@ -50,18 +49,18 @@ Friend NotInheritable Class AllInfoContainer
 
         Dim sb As New StringBuilder()
 
-        sb.AppendLine("Title")
-        sb.AppendLine($"{vbTab}Text: {Me.Title.Text}")
-        sb.AppendLine($"{vbTab}Length: {Me.Title.Length}")
-        sb.AppendLine()
-        sb.AppendLine("Class")
-        sb.AppendLine($"{vbTab}Name: {Me.ClassName.Name}")
-        sb.AppendLine($"{vbTab}Real Name: {Me.ClassName.RealName}")
-        sb.AppendLine()
         sb.AppendLine("Process")
         sb.AppendLine($"{vbTab}Name: {Me.Process.Name}.exe")
         sb.AppendLine($"{vbTab}ID: {Me.Process.Id}")
         sb.AppendLine($"{vbTab}Architecture: {Me.Process.Architecture}")
+        sb.AppendLine()
+        sb.AppendLine("Window Caption")
+        sb.AppendLine($"{vbTab}Text: {Me.Caption.Text}")
+        sb.AppendLine($"{vbTab}Length: {Me.Caption.Length}")
+        sb.AppendLine()
+        sb.AppendLine("Window Class")
+        sb.AppendLine($"{vbTab}Name: {Me.ClassName.Name}")
+        sb.AppendLine($"{vbTab}Real Name: {Me.ClassName.RealName}")
         sb.AppendLine()
         sb.AppendLine("Window Handle")
         sb.AppendLine($"{vbTab}Decimal: {Me.WindowHandle.Decimal}")
@@ -79,7 +78,7 @@ Friend NotInheritable Class AllInfoContainer
         sb.AppendLine($"{vbTab}{vbTab}Width: {Me.WindowBounds.ClientRectangleInfo.Width}")
         sb.AppendLine($"{vbTab}{vbTab}Height: {Me.WindowBounds.ClientRectangleInfo.Height}")
         sb.AppendLine()
-        sb.AppendLine("Point")
+        sb.AppendLine("Mouse Point")
         sb.AppendLine($"{vbTab}Screen")
         sb.AppendLine($"{vbTab}{vbTab}X: {Me.Point.ScreenPointInfo.X}")
         sb.AppendLine($"{vbTab}{vbTab}Y: {Me.Point.ScreenPointInfo.Y}")

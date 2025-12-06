@@ -42,7 +42,7 @@ Partial Class Main
         '
         Me.Label_refresh_ms.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label_refresh_ms.AutoSize = True
-        Me.Label_refresh_ms.Location = New System.Drawing.Point(369, 196)
+        Me.Label_refresh_ms.Location = New System.Drawing.Point(369, 195)
         Me.Label_refresh_ms.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label_refresh_ms.Name = "Label_refresh_ms"
         Me.Label_refresh_ms.Size = New System.Drawing.Size(23, 15)
@@ -60,7 +60,7 @@ Partial Class Main
         Me.PropertyGrid1.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.PropertyGrid1.Name = "PropertyGrid1"
         Me.PropertyGrid1.PropertySort = System.Windows.Forms.PropertySort.NoSort
-        Me.PropertyGrid1.Size = New System.Drawing.Size(379, 140)
+        Me.PropertyGrid1.Size = New System.Drawing.Size(379, 139)
         Me.PropertyGrid1.TabIndex = 8
         Me.PropertyGrid1.TabStop = False
         Me.PropertyGrid1.ToolbarVisible = False
@@ -87,6 +87,7 @@ Partial Class Main
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(60, 15)
         Me.LinkLabel1.TabIndex = 9
+        Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "🌐 GitHub"
         '
         'CheckBox_IgnoreChildWindows
@@ -94,7 +95,7 @@ Partial Class Main
         Me.CheckBox_IgnoreChildWindows.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.CheckBox_IgnoreChildWindows.AutoSize = True
         Me.CheckBox_IgnoreChildWindows.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.CheckBox_IgnoreChildWindows.Location = New System.Drawing.Point(13, 195)
+        Me.CheckBox_IgnoreChildWindows.Location = New System.Drawing.Point(13, 194)
         Me.CheckBox_IgnoreChildWindows.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.CheckBox_IgnoreChildWindows.Name = "CheckBox_IgnoreChildWindows"
         Me.CheckBox_IgnoreChildWindows.Size = New System.Drawing.Size(139, 19)
@@ -105,7 +106,7 @@ Partial Class Main
         'NumericUpDown_Refresh
         '
         Me.NumericUpDown_Refresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown_Refresh.Location = New System.Drawing.Point(311, 193)
+        Me.NumericUpDown_Refresh.Location = New System.Drawing.Point(311, 192)
         Me.NumericUpDown_Refresh.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.NumericUpDown_Refresh.Maximum = New Decimal(New Integer() {5000, 0, 0, 0})
         Me.NumericUpDown_Refresh.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
@@ -118,7 +119,7 @@ Partial Class Main
         '
         Me.Label_refresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label_refresh.AutoSize = True
-        Me.Label_refresh.Location = New System.Drawing.Point(232, 197)
+        Me.Label_refresh.Location = New System.Drawing.Point(232, 196)
         Me.Label_refresh.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label_refresh.Name = "Label_refresh"
         Me.Label_refresh.Size = New System.Drawing.Size(75, 15)
@@ -130,7 +131,7 @@ Partial Class Main
         Me.CheckBox_TopMost.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CheckBox_TopMost.AutoSize = True
         Me.CheckBox_TopMost.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.CheckBox_TopMost.Location = New System.Drawing.Point(317, 237)
+        Me.CheckBox_TopMost.Location = New System.Drawing.Point(317, 236)
         Me.CheckBox_TopMost.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.CheckBox_TopMost.Name = "CheckBox_TopMost"
         Me.CheckBox_TopMost.Size = New System.Drawing.Size(75, 19)
@@ -143,7 +144,7 @@ Partial Class Main
         Me.CheckBox_IgnoreLayeredWindows.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.CheckBox_IgnoreLayeredWindows.AutoSize = True
         Me.CheckBox_IgnoreLayeredWindows.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.CheckBox_IgnoreLayeredWindows.Location = New System.Drawing.Point(13, 216)
+        Me.CheckBox_IgnoreLayeredWindows.Location = New System.Drawing.Point(13, 215)
         Me.CheckBox_IgnoreLayeredWindows.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.CheckBox_IgnoreLayeredWindows.Name = "CheckBox_IgnoreLayeredWindows"
         Me.CheckBox_IgnoreLayeredWindows.Size = New System.Drawing.Size(151, 19)
@@ -156,7 +157,7 @@ Partial Class Main
         Me.CheckBox_IgnoreTransparentWindows.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.CheckBox_IgnoreTransparentWindows.AutoSize = True
         Me.CheckBox_IgnoreTransparentWindows.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.CheckBox_IgnoreTransparentWindows.Location = New System.Drawing.Point(13, 237)
+        Me.CheckBox_IgnoreTransparentWindows.Location = New System.Drawing.Point(13, 236)
         Me.CheckBox_IgnoreTransparentWindows.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.CheckBox_IgnoreTransparentWindows.Name = "CheckBox_IgnoreTransparentWindows"
         Me.CheckBox_IgnoreTransparentWindows.Size = New System.Drawing.Size(173, 19)
@@ -169,7 +170,7 @@ Partial Class Main
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Window
-        Me.ClientSize = New System.Drawing.Size(404, 262)
+        Me.ClientSize = New System.Drawing.Size(404, 261)
         Me.Controls.Add(Me.CheckBox_IgnoreTransparentWindows)
         Me.Controls.Add(Me.CheckBox_IgnoreLayeredWindows)
         Me.Controls.Add(Me.CheckBox_TopMost)

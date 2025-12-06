@@ -9,10 +9,7 @@ Option Infer Off
 
 #Region " Imports "
 
-Imports System.Collections.Generic
 Imports System.Diagnostics
-Imports System.Drawing.Imaging
-Imports System.Runtime.InteropServices
 Imports System.Text
 
 Imports DevCase.Extensions.PropertyGridExtensions
@@ -176,11 +173,11 @@ Partial Friend NotInheritable Class Main : Inherits Form
         Dim pr As Process = Process.GetProcessById(pid)
         Me.AllInfo.Process = New ProcessPropertyInfo(pr)
 
-        ' Window Title
-        Dim title As New StringBuilder(1024)
-        NativeMethods.GetWindowText(hWnd, title, title.Capacity)
-        Me.AllInfo.Title = New TitlePropertyInfo With {
-            .Text = title.ToString()
+        ' Window Caption
+        Dim caption As New StringBuilder(1024)
+        NativeMethods.GetWindowText(hWnd, caption, caption.Capacity)
+        Me.AllInfo.Caption = New CaptionPropertyInfo With {
+            .Text = caption.ToString()
         }
 
         ' Class Name
@@ -217,7 +214,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
             clientRect.Bottom - clientRect.Top
         ))
 
-        ' Points
+        ' Mouse Points
         Me.AllInfo.Point = New PointPropertyContainer With {
             .ScreenPointInfo = New PointPropertyInfo(ptScreen),
             .ClientPointInfo = New PointPropertyInfo(New Point(
