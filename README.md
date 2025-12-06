@@ -24,6 +24,8 @@ winforms
 
 ## 🖼️ Screenshots
 
+![](Images/Screenshot_01.png)
+
 ![](Images/Mouse%20Point%20Viewer.gif)
 
 ## 📝 Requirements
