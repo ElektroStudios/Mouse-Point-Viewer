@@ -14,7 +14,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Displays mouse coordinates relative to any window visible on the screen.")>
 <Assembly: AssemblyCompany("Elektro Studios")> 
 <Assembly: AssemblyProduct("Mouse Point Viewer")>
-<Assembly: AssemblyCopyright("Copyright © ElektroStudios 2016-2024")>
+<Assembly: AssemblyCopyright("Copyright © ElektroStudios 2016-2025")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -33,7 +33,7 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.1.0.0")>
-<Assembly: AssemblyFileVersion("1.1.0.0")>
+<Assembly: AssemblyVersion("1.2.0.0")>
+<Assembly: AssemblyFileVersion("1.2.0.0")>
 
 <Assembly: NeutralResourcesLanguageAttribute("en")> 
