@@ -25,9 +25,11 @@ winforms
 ## 🖼️ Screenshots
 
 Newest version:
+
 ![](Images/Screenshot_01.png)
 
 Older version:
+
 ![](Images/Mouse%20Point%20Viewer.gif)
 
 ## 📝 Requirements
