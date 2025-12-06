@@ -4,7 +4,7 @@
 #### 🌟 Improvements:
  - An "Ignore layered windows" checkbox has been added.
  - An "Ignore transparent windows" checkbox has been added.
- - Repalced all property fields with expandable ones having the following values:
+ - Replaced all property fields with expandable ones having the following values:
    - Title: Text, Length
    - Class: Name, Real Name
    - Process: Name, ID, Architecture
