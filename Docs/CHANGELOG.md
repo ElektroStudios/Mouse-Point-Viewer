@@ -1,4 +1,4 @@
-# Mouse Point Viewer Change Log 📋
+﻿# Mouse Point Viewer Change Log 📋
 
 ## v1.3 *(current)* 🆕
 #### 🌟 Improvements:
