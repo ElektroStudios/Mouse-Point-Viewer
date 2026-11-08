@@ -10,6 +10,7 @@ Option Infer Off
 #Region " Imports "
 
 Imports System.Diagnostics
+Imports System.Runtime.InteropServices
 Imports System.Text
 
 Imports DevCase.Extensions.PropertyGridExtensions
@@ -18,20 +19,41 @@ Imports Win32
 
 #End Region
 
+''' <summary>
+''' The main window of the application.
+''' </summary>
 Partial Friend NotInheritable Class Main : Inherits Form
 
+    ''' <summary>
+    ''' The information displayed in the <see cref="PropertyGrid1"/>.
+    ''' </summary>
     Private ReadOnly AllInfo As New AllInfoContainer()
 
+    ''' <summary>
+    ''' The X position of the splitter control of the <see cref="PropertyGrid1"/>.
+    ''' </summary>
     Private Const PropertyGridSplitterPosition As Integer = 140
 
+    ''' <summary>
+    ''' When <see langword="True"/>, only top-level windows are retrieved under the mouse cursor.
+    ''' </summary>
     Friend Shared ignoreChildWindows As Boolean
+
+    ''' <summary>
+    ''' When <see langword="True"/>, windows with the <c>WS_EX_LAYERED</c> extended style are ignored.
+    ''' </summary>
     Friend Shared ignoreLayeredWindows As Boolean
+
+    ''' <summary>
+    ''' When <see langword="True"/>, windows with the <c>WS_EX_TRANSPARENT</c> extended style,
+    ''' and windows that are not visible at the pixel under the mouse cursor, are ignored.
+    ''' </summary>
     Friend Shared ignoreTransparentWindows As Boolean
 
     <DebuggerStepThrough>
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-#If DEBUG Then ' CREATE A LAYERED OR TRNSPARENT FORM TO TEST FUNCTIONALITIES.
+#If DEBUG Then ' CREATE A LAYERED OR TRANSPARENT FORM TO TEST FUNCTIONALITIES.
 
         Dim layeredForm As New Form() With {
             .FormBorderStyle = FormBorderStyle.None,
@@ -45,7 +67,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
             .TransparencyKey = Color.Lime, .Opacity = 0
         }
 
-        ' Agregar algo visible dentro para diferenciar
+        ' Add something visible inside to tell it apart.
         Dim lbl As New Label() With {
             .Text = "Layered Window",
             .ForeColor = Color.Black,
@@ -71,6 +93,9 @@ Partial Friend NotInheritable Class Main : Inherits Form
 
         Me.MinimumSize = New Size(Me.Width, Me.Height)
         Me.PropertyGrid1.SetSplitterPosition(Main.PropertyGridSplitterPosition)
+
+        ' Populate the property grid immediately, instead of waiting for the first timer tick.
+        Me.RefreshInfo()
         Me.RefreshTimer.Start()
     End Sub
 
@@ -92,8 +117,15 @@ Partial Friend NotInheritable Class Main : Inherits Form
     Private Sub MainForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
         If e.Control AndAlso e.KeyCode = Keys.C Then
-            Clipboard.SetText(Me.allInfo.ToString())
             e.Handled = True
+            Try
+                Clipboard.SetText(Me.AllInfo.ToString())
+
+            Catch ex As ExternalException
+                ' The clipboard is being used by another process.
+                MessageBox.Show(Me, $"ERROR: {ex.Message}", My.Application.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            End Try
         End If
     End Sub
 
@@ -101,7 +133,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
     Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
 
         Try
-            Process.Start("https://github.com/ElektroStudios/Mouse-Point-Viewer")
+            Process.Start("https://github.com/ElektroStudios/Mouse-Point-Viewer")?.Dispose()
 
         Catch ex As Exception
             MessageBox.Show(Me, $"ERROR: {ex.Message}", My.Application.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -154,6 +186,15 @@ Partial Friend NotInheritable Class Main : Inherits Form
     <DebuggerStepThrough>
     Private Sub RefreshTimer_Tick(sender As Object, e As EventArgs) Handles RefreshTimer.Tick
 
+        Me.RefreshInfo()
+    End Sub
+
+    ''' <summary>
+    ''' Retrieves the window under the mouse cursor and updates the displayed information.
+    ''' </summary>
+    <DebuggerStepThrough>
+    Private Sub RefreshInfo()
+
         Dim ptScreen As Point = Control.MousePosition
         Dim hWnd As IntPtr = WindowHelper.GetWindowFromPoint(ptScreen)
 
@@ -170,8 +211,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
         ' Process
         Dim pid As Integer
         NativeMethods.GetWindowThreadProcessId(hWnd, pid)
-        Dim pr As Process = Process.GetProcessById(pid)
-        Me.AllInfo.Process = New ProcessPropertyInfo(pr)
+        Me.AllInfo.Process = ProcessPropertyInfo.FromProcessId(pid)
 
         ' Window Caption
         Dim caption As New StringBuilder(1024)
@@ -184,7 +224,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
         Dim classNameBuffer As New StringBuilder(256)
         Dim realClassNameBuffer As New StringBuilder(256)
         NativeMethods.GetClassName(hWnd, classNameBuffer, classNameBuffer.Capacity)
-        NativeMethods.RealGetWindowClass(hWnd, realClassNameBuffer, classNameBuffer.Capacity)
+        NativeMethods.RealGetWindowClass(hWnd, realClassNameBuffer, realClassNameBuffer.Capacity)
         Me.AllInfo.ClassName = New ClassNamePropertyInfo With {
             .Name = classNameBuffer.ToString(),
             .RealName = realClassNameBuffer.ToString()

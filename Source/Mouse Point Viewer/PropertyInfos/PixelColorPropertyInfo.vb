@@ -51,20 +51,7 @@ Friend NotInheritable Class PixelColorPropertyInfo
     <[ReadOnly](True)>
     Public ReadOnly Property WebName As String
         Get
-            Dim name As String = Nothing
-            For Each kc As KnownColor In [Enum].GetValues(GetType(KnownColor))
-                Dim kColor As Color = Color.FromKnownColor(kc)
-                If Not kColor.IsSystemColor AndAlso
-                    kColor.R = Me.Color.R AndAlso
-                    kColor.G = Me.Color.G AndAlso
-                    kColor.B = Me.Color.B AndAlso
-                    kColor.A = 255 Then ' 255 for "White" instead of "Transparent" (0)
-
-                    name = kColor.Name
-                    Exit For
-                End If
-            Next
-            Return name
+            Return WebColorConverter.GetKnownColorName(Me.Color)
         End Get
     End Property
 

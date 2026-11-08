@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Mouse Point Viewer", "Mouse Point Viewer\Mouse Point Viewer.vbproj", "{12E4683F-5FF7-4D13-9E80-36E7A7F1F8DD}"
 EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Mouse Point Viewer.Tests", "Mouse Point Viewer.Tests\Mouse Point Viewer.Tests.vbproj", "{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{12E4683F-5FF7-4D13-9E80-36E7A7F1F8DD}.Release|x64.Build.0 = Release|x64
 		{12E4683F-5FF7-4D13-9E80-36E7A7F1F8DD}.Release|x86.ActiveCfg = Release|x86
 		{12E4683F-5FF7-4D13-9E80-36E7A7F1F8DD}.Release|x86.Build.0 = Release|x86
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|x64.Build.0 = Release|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F3B2A41-8C1D-4E7A-9B52-3D0E7C4A91F6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

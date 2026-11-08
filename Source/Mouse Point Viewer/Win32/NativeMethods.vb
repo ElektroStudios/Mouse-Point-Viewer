@@ -10,6 +10,8 @@ Option Infer Off
 
 Imports System.Runtime.InteropServices
 Imports System.Security
+
+Imports Microsoft.Win32.SafeHandles
 Imports System.Text
 
 #End Region
@@ -57,10 +59,51 @@ Namespace Win32
 
 #Region " kernel32 "
 
+        ''' <summary>
+        ''' Determines whether the specified process is running under WOW64.
+        ''' </summary>
+        '''
+        ''' <param name="hProcess">
+        ''' A handle to the process, opened with at least <see cref="Constants.PROCESS_QUERY_LIMITED_INFORMATION"/> access.
+        ''' </param>
+        '''
+        ''' <param name="refWow64Process">
+        ''' Receives <see langword="True"/> if the process is running under WOW64.
+        ''' </param>
+        '''
+        ''' <returns>
+        ''' <see langword="True"/> if the function succeeds, <see langword="False"/> otherwise.
+        ''' </returns>
         <DllImport("kernel32.dll", SetLastError:=True, CallingConvention:=CallingConvention.Winapi)>
-        Friend Function IsWow64Process(hProcess As IntPtr,
-                                 ByRef refWow64Process As Boolean
-        ) As Boolean
+        Friend Function IsWow64Process(hProcess As SafeProcessHandle,
+                                       <MarshalAs(UnmanagedType.Bool)> ByRef refWow64Process As Boolean
+        ) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        End Function
+
+        ''' <summary>
+        ''' Opens an existing local process object.
+        ''' </summary>
+        '''
+        ''' <param name="dwDesiredAccess">
+        ''' The access to the process object.
+        ''' </param>
+        '''
+        ''' <param name="bInheritHandle">
+        ''' If <see langword="True"/>, processes created by this process will inherit the handle.
+        ''' </param>
+        '''
+        ''' <param name="dwProcessId">
+        ''' The identifier of the local process to be opened.
+        ''' </param>
+        '''
+        ''' <returns>
+        ''' An open handle to the specified process. If the function fails, the handle is invalid.
+        ''' </returns>
+        <DllImport("kernel32.dll", SetLastError:=True)>
+        Friend Function OpenProcess(dwDesiredAccess As Integer,
+                                    <MarshalAs(UnmanagedType.Bool)> bInheritHandle As Boolean,
+                                    dwProcessId As Integer
+        ) As SafeProcessHandle
         End Function
 
 #End Region

@@ -13,6 +13,10 @@ Imports System.Text
 
 #End Region
 
+''' <summary>
+''' The root object displayed in the <see cref="PropertyGrid"/>, containing all the information
+''' about the window and the pixel under the mouse cursor.
+''' </summary>
 Friend NotInheritable Class AllInfoContainer
 
     <DisplayName("Process")>
@@ -44,13 +48,47 @@ Friend NotInheritable Class AllInfoContainer
     <TypeConverter(GetType(ExpandableObjectConverter))>
     Public Property PixelColor As PixelColorPropertyInfo
 
+    ''' <summary>
+    ''' Gets a value indicating whether all the information properties have been populated.
+    ''' </summary>
+    <Browsable(False)>
+    Friend ReadOnly Property IsPopulated As Boolean
+        Get
+            Return Me.Process IsNot Nothing AndAlso
+                   Me.Caption IsNot Nothing AndAlso
+                   Me.ClassName IsNot Nothing AndAlso
+                   Me.WindowHandle IsNot Nothing AndAlso
+                   Me.WindowBounds?.RectangleInfo IsNot Nothing AndAlso
+                   Me.WindowBounds?.ClientRectangleInfo IsNot Nothing AndAlso
+                   Me.Point?.ScreenPointInfo IsNot Nothing AndAlso
+                   Me.Point?.ClientPointInfo IsNot Nothing AndAlso
+                   Me.PixelColor IsNot Nothing
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Returns a multi-line, tab-indented text representation of all the information,
+    ''' as it is copied to the clipboard with the Ctrl+C keyboard shortcut.
+    ''' </summary>
+    '''
+    ''' <returns>
+    ''' The text representation of all the information.
+    ''' </returns>
+    '''
+    ''' <exception cref="InvalidOperationException">
+    ''' Thrown when the information has not been populated yet (see <see cref="AllInfoContainer.IsPopulated"/>).
+    ''' </exception>
     <DebuggerStepThrough>
     Public Overrides Function ToString() As String
+
+        If Not Me.IsPopulated Then
+            Throw New InvalidOperationException("The information has not been populated yet.")
+        End If
 
         Dim sb As New StringBuilder()
 
         sb.AppendLine("Process")
-        sb.AppendLine($"{vbTab}Name: {Me.Process.Name}.exe")
+        sb.AppendLine($"{vbTab}Name: {Me.Process}")
         sb.AppendLine($"{vbTab}ID: {Me.Process.Id}")
         sb.AppendLine($"{vbTab}Architecture: {Me.Process.Architecture}")
         sb.AppendLine()
