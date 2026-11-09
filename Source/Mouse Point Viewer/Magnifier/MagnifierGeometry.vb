@@ -27,7 +27,7 @@ Friend Module MagnifierGeometry
     ''' <summary>
     ''' The maximum zoom factor.
     ''' </summary>
-    Friend Const MaxZoom As Integer = 10
+    Friend Const MaxZoom As Integer = 100
 
     ''' <summary>
     ''' The default zoom factor.

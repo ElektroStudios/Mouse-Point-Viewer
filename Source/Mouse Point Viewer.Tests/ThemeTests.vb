@@ -10,7 +10,9 @@ Option Infer Off
 
 Imports System.ComponentModel
 Imports System.Drawing
+Imports System.Reflection
 Imports System.Windows.Forms
+Imports System.Windows.Forms.VisualStyles
 
 Imports MousePointViewer.Tests.Helpers
 
@@ -184,7 +186,8 @@ Namespace MousePointViewer.Tests
                 Assert.AreEqual(p.GridViewBack, controls.Grid.ViewBackColor)
                 Assert.AreEqual(p.GridReadOnlyFore, controls.Grid.DisabledItemForeColor)
                 Assert.AreEqual(p.GridSelectedBack, controls.Grid.SelectedItemWithFocusBackColor)
-                Assert.IsFalse(controls.Grid.CanShowVisualStyleGlyphs)
+                Assert.IsTrue(controls.Grid.CanShowVisualStyleGlyphs, "The glyphs (and the label indentation) must be the same as in the light theme.")
+                Assert.AreEqual(p.Border, controls.Separator.BackColor)
                 Assert.AreEqual(p.WindowFore, controls.NestedLabel.ForeColor, "Nested controls are not themed.")
                 Assert.AreEqual(p.WindowBack, controls.Panel.BackColor)
             End Using
@@ -210,6 +213,8 @@ Namespace MousePointViewer.Tests
                 Assert.AreEqual(SystemColors.WindowText, controls.Grid.ViewForeColor)
                 Assert.IsTrue(controls.Grid.CanShowVisualStyleGlyphs)
                 Assert.AreEqual(SystemColors.GrayText, controls.SecondaryLabel.ForeColor)
+                Assert.AreEqual(SystemColors.ControlDark, controls.Separator.BackColor)
+                Assert.AreEqual(Color.Transparent, controls.PrimaryLabel.BackColor)
             End Using
         End Sub
 
@@ -299,6 +304,89 @@ Namespace MousePointViewer.Tests
 
 #End Region
 
+#Region " Dark Tree Glyphs "
+
+        ''' <summary>
+        ''' Restores the default (light) property grid glyphs after each test, as the glyphs are shared by the whole process.
+        ''' </summary>
+        <TestCleanup>
+        Public Sub TestCleanup()
+
+            ThemeManager.TrySetDarkTreeGlyphs(False)
+        End Sub
+
+        ''' <summary>
+        ''' Verifies that the internal fields that cache the property grid glyphs are found through reflection,
+        ''' and that the light glyphs are always restored.
+        ''' </summary>
+        <TestMethod>
+        Public Sub TrySetDarkTreeGlyphs_Light_FindsInternalFieldsAndRestoresDefaultGlyphs()
+
+            Assert.IsTrue(ThemeManager.TrySetDarkTreeGlyphs(False), "The internal fields of VisualStyleElement.ExplorerTreeView.Glyph were not found.")
+
+            Assert.AreEqual("Explorer::TreeView", ThemeTests.GetTreeGlyph("Closed").ClassName)
+            Assert.AreEqual("Explorer::TreeView", ThemeTests.GetTreeGlyph("Opened").ClassName)
+        End Sub
+
+        ''' <summary>
+        ''' Verifies that the dark glyphs (same part and states, dark visual style class) are applied and then restored.
+        ''' </summary>
+        <TestMethod>
+        Public Sub TrySetDarkTreeGlyphs_Dark_SwitchesToDarkVariantAndBack()
+
+            If Not VisualStyleRenderer.IsSupported OrElse
+                Not VisualStyleRenderer.IsElementDefined(VisualStyleElement.CreateElement("DarkMode_Explorer::TreeView", 2, 1)) Then
+                Assert.Inconclusive("The dark visual style is not available (visual styles disabled, or Windows prior to 10 1809).")
+            End If
+
+            Assert.IsTrue(ThemeManager.TrySetDarkTreeGlyphs(True))
+            Dim closed As VisualStyleElement = ThemeTests.GetTreeGlyph("Closed")
+            Dim opened As VisualStyleElement = ThemeTests.GetTreeGlyph("Opened")
+            Assert.AreEqual("DarkMode_Explorer::TreeView", closed.ClassName)
+            Assert.AreEqual("DarkMode_Explorer::TreeView", opened.ClassName)
+            Assert.AreEqual(2, closed.Part)
+            Assert.AreEqual(1, closed.State)
+            Assert.AreEqual(2, opened.State)
+
+            Assert.IsTrue(ThemeManager.TrySetDarkTreeGlyphs(False))
+            Assert.AreEqual("Explorer::TreeView", ThemeTests.GetTreeGlyph("Closed").ClassName)
+        End Sub
+
+        ''' <summary>
+        ''' Verifies that a property grid with expanded items paints with the dark glyphs without throwing.
+        ''' </summary>
+        <TestMethod>
+        Public Sub DarkGlyphs_PropertyGridPaints()
+
+            Using window As New TestWindow(TestWindow.GetCenteredBounds(), Color.White)
+                Dim grid As New PropertyGrid() With {.Dock = DockStyle.Fill, .SelectedObject = New Button()}
+                window.Form.Controls.Add(grid)
+                window.ShowAndPaint()
+
+                ThemeManager.ApplyColors(window.Form, ThemePalette.Dark)
+                grid.ExpandAllGridItems()
+                grid.Refresh()
+                ThemeManager.ApplyColors(window.Form, ThemePalette.Light)
+                grid.Refresh()
+            End Using
+        End Sub
+
+        ''' <summary>
+        ''' Returns the current value of the internal <c>VisualStyleElement.ExplorerTreeView.Glyph</c> property with the specified name.
+        ''' </summary>
+        '''
+        ''' <param name="propertyName">"Closed" or "Opened".</param>
+        '''
+        ''' <returns>The visual style element.</returns>
+        Private Shared Function GetTreeGlyph(propertyName As String) As VisualStyleElement
+
+            Const flags As BindingFlags = BindingFlags.Public Or BindingFlags.NonPublic
+            Dim glyphType As Type = GetType(VisualStyleElement).GetNestedType("ExplorerTreeView", flags).GetNestedType("Glyph", flags)
+            Return DirectCast(glyphType.GetProperty(propertyName, flags Or BindingFlags.Static).GetValue(Nothing), VisualStyleElement)
+        End Function
+
+#End Region
+
 #Region " Private Members "
 
         ''' <summary>
@@ -314,6 +402,7 @@ Namespace MousePointViewer.Tests
             Friend Property Grid As PropertyGrid
             Friend Property Panel As Panel
             Friend Property NestedLabel As Label
+            Friend Property Separator As Label
         End Class
 
         ''' <summary>
@@ -334,11 +423,12 @@ Namespace MousePointViewer.Tests
                 .NumericUpDown = New NumericUpDown(),
                 .Grid = New PropertyGrid(),
                 .Panel = New Panel(),
-                .NestedLabel = New Label()
+                .NestedLabel = New Label(),
+                .Separator = New Label() With {.Tag = ThemeColorRole.Separator}
             }
             controls.Panel.Controls.Add(controls.NestedLabel)
             form.Controls.AddRange({controls.PrimaryLabel, controls.SecondaryLabel, controls.Button, controls.ToggleButton,
-                                    controls.CheckBox, controls.NumericUpDown, controls.Grid, controls.Panel})
+                                    controls.CheckBox, controls.NumericUpDown, controls.Grid, controls.Panel, controls.Separator})
             Return controls
         End Function
 

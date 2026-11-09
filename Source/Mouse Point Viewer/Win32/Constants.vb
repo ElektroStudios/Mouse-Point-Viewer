@@ -80,6 +80,11 @@ Namespace Win32
         Friend Const WM_HOTKEY As Integer = &H312
 
         ''' <summary>
+        ''' Message sent to a window when its non-client area needs to be changed to indicate an active or inactive state.
+        ''' </summary>
+        Friend Const WM_NCACTIVATE As Integer = &H86
+
+        ''' <summary>
         ''' Parent window handle used to create a message-only window.
         ''' </summary>
         Friend ReadOnly HWND_MESSAGE As New IntPtr(-3)
@@ -95,31 +100,6 @@ Namespace Win32
         ''' in Windows 10 versions prior to 20H1.
         ''' </summary>
         Friend Const DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 As Integer = 19
-
-        ''' <summary>
-        ''' <c>SetWindowPos</c> flag: retains the current size.
-        ''' </summary>
-        Friend Const SWP_NOSIZE As UInteger = &H1UI
-
-        ''' <summary>
-        ''' <c>SetWindowPos</c> flag: retains the current position.
-        ''' </summary>
-        Friend Const SWP_NOMOVE As UInteger = &H2UI
-
-        ''' <summary>
-        ''' <c>SetWindowPos</c> flag: retains the current Z order.
-        ''' </summary>
-        Friend Const SWP_NOZORDER As UInteger = &H4UI
-
-        ''' <summary>
-        ''' <c>SetWindowPos</c> flag: does not activate the window.
-        ''' </summary>
-        Friend Const SWP_NOACTIVATE As UInteger = &H10UI
-
-        ''' <summary>
-        ''' <c>SetWindowPos</c> flag: applies new frame styles; sends <c>WM_NCCALCSIZE</c> and redraws the frame.
-        ''' </summary>
-        Friend Const SWP_FRAMECHANGED As UInteger = &H20UI
 
     End Module
 

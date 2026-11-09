@@ -214,6 +214,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
         Me.InitializeComponent()
 
         Me.Label_Hotkeys.Tag = ThemeColorRole.Secondary
+        Me.Label_Separator.Tag = ThemeColorRole.Separator
         Me.compactClientSize = Me.ClientSize
         Me.hotkeysHintText = Me.Label_Hotkeys.Text
 
@@ -416,7 +417,7 @@ Partial Friend NotInheritable Class Main : Inherits Form
             Me.SetTheme(ThemeManager.ResolveTheme(My.Settings.Theme, ThemeManager.IsSystemThemeDark()))
         End If
 
-        Me.Text = $"{My.Application.Info.Title} {My.Application.Info.Version.ToString(2)}"
+        Me.Text = $"{My.Application.Info.Title} {My.Application.Info.Version.ToString(3)}"
 
         ' The client area may have been scaled (AutoScaleMode) after the constructor.
         Me.compactClientSize = Me.ClientSize

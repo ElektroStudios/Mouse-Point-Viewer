@@ -420,6 +420,17 @@ Friend NotInheritable Class MagnifierWindow : Inherits Form
         Next
     End Sub
 
+    Private Sub InitializeComponent()
+        Me.SuspendLayout()
+        '
+        'MagnifierWindow
+        '
+        Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Name = "MagnifierWindow"
+        Me.ResumeLayout(False)
+
+    End Sub
+
 #End Region
 
 End Class

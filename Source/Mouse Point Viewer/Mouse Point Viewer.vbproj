@@ -176,6 +176,9 @@
     <Compile Include="Win32\Win32.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Magnifier\MagnifierWindow.resx">
+      <DependentUpon>MagnifierWindow.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI.resx">
       <DependentUpon>UI.vb</DependentUpon>
     </EmbeddedResource>

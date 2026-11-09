@@ -1,6 +1,14 @@
 ﻿# Mouse Point Viewer Change Log 📋
 
-## v1.4 *(current)* 🆕
+## v1.4.1 *(current)* 🆕
+#### 🌟 Improvements:
+ - Added a visual separator between the application buttons and the GitHub button.
+
+#### 🛠️ Fixes:
+ - **Title Bar Theme Switching:** After switching the theme, the title bar showed text glitches and the minimize/maximize/close buttons became invisible when the window was dragged. The title bar is now repainted without forcing a frame recalculation.
+ - **Dark Theme Property Grid:** The property labels were shifted to the left, and the expand/collapse glyphs were "+" / "-" boxes. The dark theme now uses the same chevron glyphs and label indentation as the light theme, in their dark visual style variant (light chevrons, as in the dark Windows Explorer), so they are clearly visible over the dark background.
+
+## v1.4 🔄
 #### 🚀 New Features:
  - **Global Hotkeys:** The values can now be copied to the clipboard with the **Ctrl+Alt+C** global hotkey, which works regardless of which window is focused (previously, Ctrl+C only worked while this window was focused; it is kept as a local shortcut). The hotkeys are registered through the Windows `RegisterHotKey` API: no keyboard hook is installed, so there is no impact on the system input performance. A notification confirms the copied values, and a warning is shown if a hotkey is already in use by another application.
  - **Magnifier:** Added a magnifier (button with a magnifying glass icon, or **Ctrl+Alt+M** global hotkey) that follows the mouse cursor and shows a zoomed view of the screen around it, highlighting the pixel under the cursor and showing its color. The zoom (2x to 10x, with a pixel grid from 6x) is changed with **Ctrl+Alt+Plus / Ctrl+Alt+Minus** (main keyboard or numeric keypad), and the magnifier is closed with **Esc**, Ctrl+Alt+M or its button. These zoom and close hotkeys are only registered while the magnifier is visible. The magnifier never takes the focus, never covers the inspected pixel, and does not appear in the taskbar nor in Alt+Tab.

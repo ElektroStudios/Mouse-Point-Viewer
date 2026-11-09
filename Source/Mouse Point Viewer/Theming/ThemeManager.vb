@@ -10,6 +10,8 @@ Option Infer Off
 
 Imports System.Collections.Generic
 Imports System.Diagnostics
+Imports System.Reflection
+Imports System.Windows.Forms.VisualStyles
 
 Imports Microsoft.Win32
 
@@ -223,10 +225,15 @@ Friend Module ThemeManager
             Return False
         End If
 
-        ' Force the non-client area to be redrawn, so the change is visible immediately when switching the theme.
-        NativeMethods.SetWindowPos(hWnd, IntPtr.Zero, 0, 0, 0, 0,
-                                   Constants.SWP_NOMOVE Or Constants.SWP_NOSIZE Or Constants.SWP_NOZORDER Or
-                                   Constants.SWP_NOACTIVATE Or Constants.SWP_FRAMECHANGED)
+        ' When switching the theme at runtime, the title bar of a visible window is not repainted until it is
+        ' (de)activated (Windows 10). Repaint only the caption by simulating a deactivation followed by its real state.
+        ' Note: forcing a frame recalculation (SetWindowPos with SWP_FRAMECHANGED) desynchronizes the non-client area
+        ' and DWM, producing caption glitches and invisible minimize/maximize/close buttons.
+        If NativeMethods.IsWindowVisible(hWnd) Then
+            Dim isActive As Boolean = NativeMethods.GetForegroundWindow() = hWnd
+            NativeMethods.SendMessage(hWnd, Constants.WM_NCACTIVATE, IntPtr.Zero, IntPtr.Zero)
+            NativeMethods.SendMessage(hWnd, Constants.WM_NCACTIVATE, New IntPtr(If(isActive, 1, 0)), IntPtr.Zero)
+        End If
         Return True
     End Function
 
@@ -257,6 +264,57 @@ Friend Module ThemeManager
         ' in which case the default visual style is kept, which is the expected fallback.
         NativeMethods.SetWindowTheme(hWnd, If(dark, "DarkMode_Explorer", "Explorer"), Nothing)
     End Sub
+
+    ''' <summary>
+    ''' Switches the expand/collapse glyphs (chevrons) drawn by the <see cref="PropertyGrid"/> between the light
+    ''' ("Explorer::TreeView") and the dark ("DarkMode_Explorer::TreeView") variants of the operating system visual style.
+    ''' <para></para>
+    ''' The <see cref="PropertyGrid"/> always draws the glyphs of the internal
+    ''' <c>VisualStyleElement.ExplorerTreeView.Glyph.Closed</c> and <c>.Opened</c> elements, whose (black) light variant
+    ''' is hardly visible over a dark background. This method replaces, through reflection, the cached elements
+    ''' (the private static fields <c>closed</c> and <c>opened</c>) with the elements of the requested variant,
+    ''' which have the same shape and size (so the label indentation does not change).
+    ''' <para></para>
+    ''' The change affects every <see cref="PropertyGrid"/> of the process. Invalidate the grids to repaint them.
+    ''' </summary>
+    '''
+    ''' <param name="dark">
+    ''' <see langword="True"/> to use the dark variant, <see langword="False"/> to restore the light (default) variant.
+    ''' </param>
+    '''
+    ''' <returns>
+    ''' <see langword="True"/> if the glyphs were switched; <see langword="False"/> if the internal fields were not found
+    ''' (a .NET Framework version with a different implementation), visual styles are disabled, or the dark variant
+    ''' is not defined (Windows versions prior to Windows 10 version 1809). In that case the glyphs are not modified.
+    ''' </returns>
+    <DebuggerStepThrough>
+    Friend Function TrySetDarkTreeGlyphs(dark As Boolean) As Boolean
+
+        Const flags As BindingFlags = BindingFlags.Public Or BindingFlags.NonPublic
+        Dim explorerTreeViewType As Type = GetType(VisualStyleElement).GetNestedType("ExplorerTreeView", flags)
+        Dim glyphType As Type = explorerTreeViewType?.GetNestedType("Glyph", flags)
+        Dim closedField As FieldInfo = glyphType?.GetField("closed", BindingFlags.NonPublic Or BindingFlags.Static)
+        Dim openedField As FieldInfo = glyphType?.GetField("opened", BindingFlags.NonPublic Or BindingFlags.Static)
+        If closedField Is Nothing OrElse openedField Is Nothing OrElse
+            closedField.FieldType IsNot GetType(VisualStyleElement) OrElse openedField.FieldType IsNot GetType(VisualStyleElement) Then
+            Return False
+        End If
+
+        ' TVP_GLYPH (2), GLPS_CLOSED (1) / GLPS_OPENED (2).
+        Dim className As String = If(dark, "DarkMode_Explorer::TreeView", "Explorer::TreeView")
+        Dim closedElement As VisualStyleElement = VisualStyleElement.CreateElement(className, 2, 1)
+        Dim openedElement As VisualStyleElement = VisualStyleElement.CreateElement(className, 2, 2)
+
+        If dark AndAlso Not (VisualStyleRenderer.IsSupported AndAlso
+                             VisualStyleRenderer.IsElementDefined(closedElement) AndAlso
+                             VisualStyleRenderer.IsElementDefined(openedElement)) Then
+            Return False
+        End If
+
+        closedField.SetValue(Nothing, closedElement)
+        openedField.SetValue(Nothing, openedElement)
+        Return True
+    End Function
 
 #End Region
 
@@ -324,11 +382,11 @@ Friend Module ThemeManager
                 nud.BorderStyle = If(isDark, BorderStyle.FixedSingle, BorderStyle.Fixed3D)
 
             Case TypeOf ctrl Is Label
-                ctrl.BackColor = Color.Transparent
+                Dim role As ThemeColorRole = If(TypeOf ctrl.Tag Is ThemeColorRole, DirectCast(ctrl.Tag, ThemeColorRole), ThemeColorRole.Primary)
+                ' A separator is a thin label filled with the border color.
+                ctrl.BackColor = If(role = ThemeColorRole.Separator, palette.Border, Color.Transparent)
                 ' Labels may be dynamically recolored (e.g. the status/hint label); they use the window colors by default.
-                ctrl.ForeColor = If(TypeOf ctrl.Tag Is ThemeColorRole AndAlso DirectCast(ctrl.Tag, ThemeColorRole) = ThemeColorRole.Secondary,
-                                    palette.SecondaryFore,
-                                    palette.WindowFore)
+                ctrl.ForeColor = If(role = ThemeColorRole.Secondary, palette.SecondaryFore, palette.WindowFore)
 
             Case Else
                 ctrl.BackColor = palette.WindowBack
@@ -381,8 +439,12 @@ Friend Module ThemeManager
         grid.SelectedItemWithFocusForeColor = palette.GridSelectedFore
         grid.DisabledItemForeColor = palette.GridReadOnlyFore
         grid.ViewBorderColor = palette.Border
-        ' The visual style expand/collapse glyphs are hardly visible over a dark background.
-        grid.CanShowVisualStyleGlyphs = palette.Theme <> AppTheme.Dark
+        ' The visual style glyphs (the Explorer tree view chevrons drawn by the operating system) are kept in every theme:
+        ' disabling them draws the legacy "+" / "-" boxes instead, which are narrower and shift the labels to the left.
+        grid.CanShowVisualStyleGlyphs = True
+        ' The result is ignored on purpose: when the dark glyphs are not available, the default glyphs are kept.
+        ThemeManager.TrySetDarkTreeGlyphs(palette.Theme = AppTheme.Dark)
+        grid.Invalidate(invalidateChildren:=True)
     End Sub
 
 #End Region
@@ -405,5 +467,10 @@ Friend Enum ThemeColorRole As Integer
     ''' The label uses the secondary text color (<see cref="ThemePalette.SecondaryFore"/>).
     ''' </summary>
     Secondary = 1
+
+    ''' <summary>
+    ''' The label is a visual separator, filled with the border color (<see cref="ThemePalette.Border"/>).
+    ''' </summary>
+    Separator = 2
 
 End Enum

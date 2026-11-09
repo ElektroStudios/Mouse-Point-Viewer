@@ -314,49 +314,15 @@ Namespace Win32
         End Function
 
         ''' <summary>
-        ''' Changes the size, position, and Z order of a window.
+        ''' Retrieves a handle to the foreground window (the window with which the user is currently working).
         ''' </summary>
         '''
-        ''' <param name="hWnd">
-        ''' A handle to the window.
-        ''' </param>
-        '''
-        ''' <param name="hWndInsertAfter">
-        ''' A handle to the window to precede the positioned window in the Z order.
-        ''' </param>
-        '''
-        ''' <param name="x">
-        ''' The new position of the left side of the window.
-        ''' </param>
-        '''
-        ''' <param name="y">
-        ''' The new position of the top of the window.
-        ''' </param>
-        '''
-        ''' <param name="cx">
-        ''' The new width of the window.
-        ''' </param>
-        '''
-        ''' <param name="cy">
-        ''' The new height of the window.
-        ''' </param>
-        '''
-        ''' <param name="uFlags">
-        ''' The window sizing and positioning flags (<c>SWP_*</c>).
-        ''' </param>
-        '''
         ''' <returns>
-        ''' <see langword="True"/> if the function succeeds, <see langword="False"/> otherwise.
+        ''' The handle of the foreground window, or <see cref="IntPtr.Zero"/> in certain circumstances
+        ''' (e.g. when a window is losing activation).
         ''' </returns>
-        <DllImport("user32.dll", SetLastError:=True)>
-        Friend Function SetWindowPos(hWnd As IntPtr,
-                                     hWndInsertAfter As IntPtr,
-                                     x As Integer,
-                                     y As Integer,
-                                     cx As Integer,
-                                     cy As Integer,
-                                     uFlags As UInteger
-        ) As <MarshalAs(UnmanagedType.Bool)> Boolean
+        <DllImport("user32.dll")>
+        Friend Function GetForegroundWindow() As IntPtr
         End Function
 
         ''' <summary>

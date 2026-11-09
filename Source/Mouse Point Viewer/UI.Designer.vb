@@ -38,6 +38,7 @@ Partial Class Main
         Me.Button_ViewMode = New System.Windows.Forms.Button()
         Me.Button_Theme = New System.Windows.Forms.Button()
         Me.Button_GitHub = New System.Windows.Forms.Button()
+        Me.Label_Separator = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.StatusTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.NumericUpDown_Refresh, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -78,7 +79,7 @@ Partial Class Main
         Me.Label_Hotkeys.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label_Hotkeys.Location = New System.Drawing.Point(12, 9)
         Me.Label_Hotkeys.Name = "Label_Hotkeys"
-        Me.Label_Hotkeys.Size = New System.Drawing.Size(256, 34)
+        Me.Label_Hotkeys.Size = New System.Drawing.Size(244, 34)
         Me.Label_Hotkeys.TabIndex = 0
         Me.Label_Hotkeys.Text = "Ctrl+Alt+C: copy the values to the clipboard." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ctrl+Alt+M: show or hide the magnifier."
         Me.Label_Hotkeys.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -163,7 +164,7 @@ Partial Class Main
         Me.CheckBox_Magnifier.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CheckBox_Magnifier.Appearance = System.Windows.Forms.Appearance.Button
         Me.CheckBox_Magnifier.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.CheckBox_Magnifier.Location = New System.Drawing.Point(274, 12)
+        Me.CheckBox_Magnifier.Location = New System.Drawing.Point(262, 12)
         Me.CheckBox_Magnifier.Margin = New System.Windows.Forms.Padding(0)
         Me.CheckBox_Magnifier.Name = "CheckBox_Magnifier"
         Me.CheckBox_Magnifier.Size = New System.Drawing.Size(28, 28)
@@ -176,7 +177,7 @@ Partial Class Main
         '
         Me.Button_ViewMode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button_ViewMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button_ViewMode.Location = New System.Drawing.Point(304, 12)
+        Me.Button_ViewMode.Location = New System.Drawing.Point(292, 12)
         Me.Button_ViewMode.Margin = New System.Windows.Forms.Padding(0)
         Me.Button_ViewMode.Name = "Button_ViewMode"
         Me.Button_ViewMode.Size = New System.Drawing.Size(28, 28)
@@ -188,7 +189,7 @@ Partial Class Main
         '
         Me.Button_Theme.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Button_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button_Theme.Location = New System.Drawing.Point(334, 12)
+        Me.Button_Theme.Location = New System.Drawing.Point(322, 12)
         Me.Button_Theme.Margin = New System.Windows.Forms.Padding(0)
         Me.Button_Theme.Name = "Button_Theme"
         Me.Button_Theme.Size = New System.Drawing.Size(28, 28)
@@ -208,6 +209,16 @@ Partial Class Main
         Me.Button_GitHub.TabStop = False
         Me.Button_GitHub.UseVisualStyleBackColor = False
         '
+        'Label_Separator
+        '
+        Me.Label_Separator.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label_Separator.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.Label_Separator.Location = New System.Drawing.Point(357, 16)
+        Me.Label_Separator.Margin = New System.Windows.Forms.Padding(0)
+        Me.Label_Separator.Name = "Label_Separator"
+        Me.Label_Separator.Size = New System.Drawing.Size(1, 20)
+        Me.Label_Separator.TabIndex = 13
+        '
         'StatusTimer
         '
         Me.StatusTimer.Interval = 2000
@@ -218,6 +229,7 @@ Partial Class Main
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Window
         Me.ClientSize = New System.Drawing.Size(404, 261)
+        Me.Controls.Add(Me.Label_Separator)
         Me.Controls.Add(Me.Button_GitHub)
         Me.Controls.Add(Me.Button_Theme)
         Me.Controls.Add(Me.Button_ViewMode)
@@ -261,6 +273,7 @@ Partial Class Main
     Friend WithEvents Button_ViewMode As Button
     Friend WithEvents Button_Theme As Button
     Friend WithEvents Button_GitHub As Button
+    Friend WithEvents Label_Separator As Label
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents StatusTimer As Windows.Forms.Timer
 End Class
