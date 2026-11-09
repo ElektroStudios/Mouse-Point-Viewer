@@ -71,9 +71,16 @@ I was tired of dealing with that exact friction, so I built this humble utility 
 
 ## 🖼️ Screenshots
 
-![](Images/Screenshot_03.png)
-
-![](Images/Mouse%20Point%20Viewer.gif)
+<div align="center">
+  <img src="Images/Screenshot_1.png" width="48%" />
+  <img src="Images/Screenshot_2.png" width="48%" />
+  <br>
+  <img src="Images/Screenshot_3.png" width="48%" />
+  <img src="Images/Screenshot_4.png" width="48%" />
+  <br>
+  <br>
+  <img src="Images/Mouse%20Point%20Viewer.gif" width="48%" />
+</div>
 
 ## 📝 Requirements
 
