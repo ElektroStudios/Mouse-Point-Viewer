@@ -107,6 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Numerics" />
@@ -123,6 +124,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\WindowHelper.vb" />
+    <Compile Include="Helpers\ImageHelper.vb" />
+    <Compile Include="Hotkeys\GlobalHotkeyManager.vb" />
+    <Compile Include="Hotkeys\HotkeyModifiers.vb" />
+    <Compile Include="Hotkeys\HotkeyPressedEventArgs.vb" />
+    <Compile Include="Magnifier\MagnifierGeometry.vb" />
+    <Compile Include="Theming\AppTheme.vb" />
+    <Compile Include="Theming\ThemeManager.vb" />
+    <Compile Include="Theming\ThemePalette.vb" />
+    <Compile Include="Magnifier\MagnifierWindow.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PropertyInfos\PixelColorPropertyInfo.vb" />
     <Compile Include="PropertyInfos\ProcessPropertyInfo.vb" />
     <Compile Include="PropertyInfos\ClassNamePropertyInfo.vb" />
@@ -188,10 +200,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Main.ico" />
+    <None Include="Resources\GitHub_Invertocat_Black.png" />
+    <None Include="Resources\GitHub_Invertocat_White.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Resources.Extensions">
-      <Version>10.0.9</Version>
+      <Version>10.0.14</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

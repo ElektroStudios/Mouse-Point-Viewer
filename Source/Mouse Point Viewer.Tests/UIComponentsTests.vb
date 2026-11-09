@@ -25,7 +25,7 @@ Namespace MousePointViewer.Tests
 
     ''' <summary>
     ''' Tests for the user interface components:
-    ''' <see cref="PixelColorEditor"/>, the <see cref="PropertyGrid"/> extensions, and the <see cref="Main"/> form.
+    ''' <see cref="PixelColorEditor"/> and the <see cref="PropertyGrid"/> extensions.
     ''' </summary>
     <STATestClass>
     <TestCategory("UI")>
@@ -152,101 +152,160 @@ Namespace MousePointViewer.Tests
 
 #End Region
 
-#Region " Main Form "
+#Region " PropertyGrid Extensions (Grid Items) "
 
         ''' <summary>
-        ''' Verifies the default state of the option controls of the main form.
+        ''' Verifies that the root grid item is found, and that its children are the properties of the selected object.
         ''' </summary>
         <TestMethod>
-        Public Sub MainForm_DefaultState()
+        Public Sub PropertyGrid_GetRootGridItem_ReturnsRootWithTopLevelProperties()
 
-            Using form As New Main()
-                Assert.IsFalse(form.CheckBox_IgnoreChildWindows.Checked)
-                Assert.IsFalse(form.CheckBox_IgnoreLayeredWindows.Checked)
-                Assert.IsFalse(form.CheckBox_IgnoreTransparentWindows.Checked)
-                Assert.IsFalse(form.CheckBox_TopMost.Checked)
-                Assert.AreEqual(10D, form.NumericUpDown_Refresh.Minimum)
-                Assert.AreEqual(5000D, form.NumericUpDown_Refresh.Maximum)
-                Assert.AreEqual(100D, form.NumericUpDown_Refresh.Value)
-                Assert.AreEqual(100, form.RefreshTimer.Interval)
-                Assert.IsFalse(form.RefreshTimer.Enabled, "The timer must not start before the form is shown.")
-                Assert.IsTrue(form.KeyPreview, "KeyPreview is required for the Ctrl+C shortcut.")
-                Assert.IsNotNull(form.Icon)
+            Using window As New TestWindow(TestWindow.GetCenteredBounds(), Color.White)
+                Dim grid As PropertyGrid = UIComponentsTests.CreateGridWithInfo(window)
+
+                Dim root As GridItem = grid.GetRootGridItem()
+
+                Assert.AreEqual(GridItemType.Root, root.GridItemType)
+                Assert.IsNull(root.Parent)
+                Assert.AreEqual(7, root.GridItems.Count)
             End Using
         End Sub
 
         ''' <summary>
-        ''' Verifies that each "Ignore ..." check box updates its corresponding window search option.
+        ''' Verifies that the root grid item is also found when a nested item is selected.
         ''' </summary>
         <TestMethod>
-        Public Sub MainForm_IgnoreCheckBoxes_UpdateWindowSearchOptions()
+        Public Sub PropertyGrid_GetRootGridItem_NestedItemSelected_ReturnsRoot()
 
-            Using form As New Main()
-                form.CheckBox_IgnoreChildWindows.Checked = True
-                Assert.IsTrue(Main.ignoreChildWindows)
-                Assert.IsFalse(Main.ignoreLayeredWindows)
-                Assert.IsFalse(Main.ignoreTransparentWindows)
+            Using window As New TestWindow(TestWindow.GetCenteredBounds(), Color.White)
+                Dim grid As PropertyGrid = UIComponentsTests.CreateGridWithInfo(window)
+                Dim firstTopLevel As GridItem = grid.GetRootGridItem().GridItems(0)
+                firstTopLevel.Expanded = True
+                grid.SelectedGridItem = firstTopLevel.GridItems(0)
 
-                form.CheckBox_IgnoreLayeredWindows.Checked = True
-                Assert.IsTrue(Main.ignoreLayeredWindows)
+                Dim root As GridItem = grid.GetRootGridItem()
 
-                form.CheckBox_IgnoreTransparentWindows.Checked = True
-                Assert.IsTrue(Main.ignoreTransparentWindows)
-
-                form.CheckBox_IgnoreChildWindows.Checked = False
-                form.CheckBox_IgnoreLayeredWindows.Checked = False
-                form.CheckBox_IgnoreTransparentWindows.Checked = False
-                Assert.IsFalse(Main.ignoreChildWindows)
-                Assert.IsFalse(Main.ignoreLayeredWindows)
-                Assert.IsFalse(Main.ignoreTransparentWindows)
+                Assert.AreEqual(GridItemType.Root, root.GridItemType)
             End Using
         End Sub
 
         ''' <summary>
-        ''' Verifies that the "Top Most" check box updates the <see cref="Form.TopMost"/> property of the form.
+        ''' Verifies that a <see cref="PropertyGrid"/> without selected object throws <see cref="InvalidOperationException"/>.
         ''' </summary>
         <TestMethod>
-        Public Sub MainForm_TopMostCheckBox_UpdatesTopMost()
+        Public Sub PropertyGrid_GetRootGridItem_NoSelectedObject_ThrowsInvalidOperationException()
 
-            Using form As New Main()
-                form.CheckBox_TopMost.Checked = True
-                Assert.IsTrue(form.TopMost)
-
-                form.CheckBox_TopMost.Checked = False
-                Assert.IsFalse(form.TopMost)
+            Using grid As New PropertyGrid()
+                Assert.ThrowsExactly(Of InvalidOperationException)(Function() grid.GetRootGridItem())
             End Using
         End Sub
 
         ''' <summary>
-        ''' Verifies that the refresh rate text updates the timer interval only when it is a valid integer
-        ''' within the allowed range.
+        ''' Verifies that the top-level items are expanded (only one level), and then collapsed.
+        ''' </summary>
+        <TestMethod>
+        Public Sub PropertyGrid_SetTopLevelItemsExpanded_ExpandsOneLevelAndCollapses()
+
+            Using window As New TestWindow(TestWindow.GetCenteredBounds(), Color.White)
+                Dim grid As PropertyGrid = UIComponentsTests.CreateGridWithInfo(window)
+
+                grid.SetTopLevelItemsExpanded(True)
+                For Each item As GridItem In grid.GetRootGridItem().GridItems
+                    Assert.IsTrue(item.Expanded, $"'{item.Label}' is not expanded.")
+                    For Each child As GridItem In item.GridItems
+                        Assert.IsFalse(child.Expanded, $"'{item.Label} > {child.Label}' is expanded.")
+                    Next
+                Next
+
+                grid.SetTopLevelItemsExpanded(False)
+                For Each item As GridItem In grid.GetRootGridItem().GridItems
+                    Assert.IsFalse(item.Expanded, $"'{item.Label}' is not collapsed.")
+                Next
+            End Using
+        End Sub
+
+        ''' <summary>
+        ''' Verifies that the expanded state of the top-level items survives the refresh performed on every timer tick,
+        ''' in which all the nested information objects are replaced.
+        ''' </summary>
+        <TestMethod>
+        Public Sub PropertyGrid_ExpandedItems_SurviveRefreshWithNewValues()
+
+            Using window As New TestWindow(TestWindow.GetCenteredBounds(), Color.White)
+                Dim grid As PropertyGrid = UIComponentsTests.CreateGridWithInfo(window)
+                grid.SetTopLevelItemsExpanded(True)
+
+                Dim info As AllInfoContainer = DirectCast(grid.SelectedObject, AllInfoContainer)
+                info.Process = New ProcessPropertyInfo("explorer", 4321, ProcessPropertyInfo.Architecture64Bit)
+                info.PixelColor = New PixelColorPropertyInfo(Color.Blue)
+                grid.Refresh()
+
+                For Each item As GridItem In grid.GetRootGridItem().GridItems
+                    Assert.IsTrue(item.Expanded, $"'{item.Label}' was collapsed by the refresh.")
+                Next
+            End Using
+        End Sub
+
+        ''' <summary>
+        ''' Verifies that the internal grid view (the control that contains the scroll bars) is found.
+        ''' </summary>
+        <TestMethod>
+        Public Sub PropertyGrid_GetGridView_ReturnsInternalPropertyGridView()
+
+            Using grid As New PropertyGrid()
+                Dim view As Control = grid.GetGridView()
+
+                Assert.IsNotNull(view)
+                Assert.AreEqual("PropertyGridView", view.GetType().Name)
+                Assert.AreSame(grid, view.Parent)
+            End Using
+        End Sub
+
+#End Region
+
+#Region " Private Methods "
+
+        ''' <summary>
+        ''' Adds a docked <see cref="PropertyGrid"/> that displays a populated <see cref="AllInfoContainer"/>
+        ''' to the specified test window, and shows the window.
         ''' </summary>
         '''
-        ''' <param name="text">
-        ''' The refresh rate text typed by the user.
+        ''' <param name="window">
+        ''' The test window.
         ''' </param>
         '''
-        ''' <param name="expectedInterval">
-        ''' The expected timer interval.
-        ''' </param>
-        <TestMethod>
-        <DataRow("250", 250)>
-        <DataRow("10", 10)>
-        <DataRow("5000", 5000)>
-        <DataRow("9", 100)>
-        <DataRow("5001", 100)>
-        <DataRow("abc", 100)>
-        <DataRow("", 100)>
-        Public Sub MainForm_RefreshRateText_UpdatesTimerIntervalWhenValid(text As String, expectedInterval As Integer)
+        ''' <returns>
+        ''' The <see cref="PropertyGrid"/>.
+        ''' </returns>
+        Private Shared Function CreateGridWithInfo(window As TestWindow) As PropertyGrid
 
-            Using form As New Main()
-                form.RefreshTimer.Interval = 100
+            Dim info As New AllInfoContainer With {
+                .Process = New ProcessPropertyInfo("notepad", 1234, ProcessPropertyInfo.Architecture64Bit),
+                .Caption = New CaptionPropertyInfo With {.Text = "Untitled - Notepad"},
+                .ClassName = New ClassNamePropertyInfo With {.Name = "Notepad", .RealName = "Notepad"},
+                .WindowHandle = New WindowHandlePropertyInfo(New IntPtr(&H1A2B3C)),
+                .WindowBounds = New WindowBoundsPropertyContainer With {
+                    .RectangleInfo = New RectanglePropertyInfo(New Rectangle(100, 50, 640, 480)),
+                    .ClientRectangleInfo = New RectanglePropertyInfo(New Rectangle(108, 81, 624, 441))
+                },
+                .Point = New PointPropertyContainer With {
+                    .ScreenPointInfo = New PointPropertyInfo(New Point(300, 200)),
+                    .ClientPointInfo = New PointPropertyInfo(New Point(192, 119))
+                },
+                .PixelColor = New PixelColorPropertyInfo(Color.Red)
+            }
 
-                form.NumericUpDown_Refresh.Text = text
-
-                Assert.AreEqual(expectedInterval, form.RefreshTimer.Interval)
-            End Using
-        End Sub
+            Dim grid As New PropertyGrid() With {
+                .Dock = DockStyle.Fill,
+                .PropertySort = PropertySort.NoSort,
+                .ToolbarVisible = False,
+                .HelpVisible = False,
+                .SelectedObject = info
+            }
+            window.Form.Controls.Add(grid)
+            window.ShowAndPaint()
+            Return grid
+        End Function
 
 #End Region
 

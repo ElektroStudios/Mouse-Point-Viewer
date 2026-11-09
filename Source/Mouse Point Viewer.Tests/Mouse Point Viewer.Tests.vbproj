@@ -7,13 +7,14 @@
     <MyType>Empty</MyType>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>$(Platform)</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <OptionStrict>On</OptionStrict>
     <OptionExplicit>On</OptionExplicit>
     <OptionInfer>Off</OptionInfer>
     <OptionCompare>Binary</OptionCompare>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +22,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
     <PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
     <!-- Required at runtime to load the pre-serialized resources (e.g. the form icon) of the main assembly. -->
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.9" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>

@@ -54,6 +54,73 @@ Namespace Win32
         ''' </summary>
         Friend Const PROCESS_QUERY_LIMITED_INFORMATION As Integer = &H1000
 
+        ''' <summary>
+        ''' Extended window style: the window is a tool window (it does not appear in the taskbar nor in Alt+Tab).
+        ''' </summary>
+        Friend Const WS_EX_TOOLWINDOW As Integer = &H80
+
+        ''' <summary>
+        ''' Extended window style: the window is placed above all non-topmost windows.
+        ''' </summary>
+        Friend Const WS_EX_TOPMOST As Integer = &H8
+
+        ''' <summary>
+        ''' Extended window style: the window does not become the foreground window when the user clicks it.
+        ''' </summary>
+        Friend Const WS_EX_NOACTIVATE As Integer = &H8000000
+
+        ''' <summary>
+        ''' <c>SetLayeredWindowAttributes</c> flag: use the alpha value to determine the opacity of the layered window.
+        ''' </summary>
+        Friend Const LWA_ALPHA As UInteger = &H2UI
+
+        ''' <summary>
+        ''' Message posted when the user presses a hot key registered by <c>RegisterHotKey</c>.
+        ''' </summary>
+        Friend Const WM_HOTKEY As Integer = &H312
+
+        ''' <summary>
+        ''' Parent window handle used to create a message-only window.
+        ''' </summary>
+        Friend ReadOnly HWND_MESSAGE As New IntPtr(-3)
+
+        ''' <summary>
+        ''' <c>DwmSetWindowAttribute</c> attribute: allows the window frame to be drawn in dark mode colors
+        ''' (Windows 10 version 20H1 and later, and Windows 11).
+        ''' </summary>
+        Friend Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
+
+        ''' <summary>
+        ''' Undocumented value of the <see cref="DWMWA_USE_IMMERSIVE_DARK_MODE"/> attribute
+        ''' in Windows 10 versions prior to 20H1.
+        ''' </summary>
+        Friend Const DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 As Integer = 19
+
+        ''' <summary>
+        ''' <c>SetWindowPos</c> flag: retains the current size.
+        ''' </summary>
+        Friend Const SWP_NOSIZE As UInteger = &H1UI
+
+        ''' <summary>
+        ''' <c>SetWindowPos</c> flag: retains the current position.
+        ''' </summary>
+        Friend Const SWP_NOMOVE As UInteger = &H2UI
+
+        ''' <summary>
+        ''' <c>SetWindowPos</c> flag: retains the current Z order.
+        ''' </summary>
+        Friend Const SWP_NOZORDER As UInteger = &H4UI
+
+        ''' <summary>
+        ''' <c>SetWindowPos</c> flag: does not activate the window.
+        ''' </summary>
+        Friend Const SWP_NOACTIVATE As UInteger = &H10UI
+
+        ''' <summary>
+        ''' <c>SetWindowPos</c> flag: applies new frame styles; sends <c>WM_NCCALCSIZE</c> and redraws the frame.
+        ''' </summary>
+        Friend Const SWP_FRAMECHANGED As UInteger = &H20UI
+
     End Module
 
 End Namespace

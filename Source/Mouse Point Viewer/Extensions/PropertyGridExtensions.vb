@@ -77,6 +77,97 @@ Namespace DevCase.Extensions.PropertyGridExtensions
 
         End Sub
 
+        ''' <summary>
+        ''' Returns the root <see cref="GridItem"/> of the source <see cref="PropertyGrid"/>,
+        ''' whose children are the top-level items (the properties of the selected object).
+        ''' </summary>
+        '''
+        ''' <param name="propGrid">
+        ''' The source <see cref="PropertyGrid"/>.
+        ''' </param>
+        '''
+        ''' <returns>
+        ''' The root <see cref="GridItem"/>.
+        ''' </returns>
+        '''
+        ''' <exception cref="InvalidOperationException">
+        ''' Thrown when the <see cref="PropertyGrid"/> has no selected object.
+        ''' </exception>
+        <DebuggerStepThrough>
+        <Extension>
+        <EditorBrowsable(EditorBrowsableState.Always)>
+        Friend Function GetRootGridItem(propGrid As PropertyGrid) As GridItem
+
+            ' When no item is selected, SelectedGridItem returns the root item itself.
+            Dim item As GridItem = propGrid.SelectedGridItem
+            If item Is Nothing Then
+                Throw New InvalidOperationException("The PropertyGrid has no selected object.")
+            End If
+
+            While item.Parent IsNot Nothing
+                item = item.Parent
+            End While
+            Return item
+
+        End Function
+
+        ''' <summary>
+        ''' Expands or collapses the top-level items of the source <see cref="PropertyGrid"/>.
+        ''' <para></para>
+        ''' When collapsing, all the nested items are collapsed too.
+        ''' </summary>
+        '''
+        ''' <param name="propGrid">
+        ''' The source <see cref="PropertyGrid"/>.
+        ''' </param>
+        '''
+        ''' <param name="expanded">
+        ''' <see langword="True"/> to expand the top-level items (one level), <see langword="False"/> to collapse all the items.
+        ''' </param>
+        '''
+        ''' <exception cref="InvalidOperationException">
+        ''' Thrown when the <see cref="PropertyGrid"/> has no selected object.
+        ''' </exception>
+        <DebuggerStepThrough>
+        <Extension>
+        <EditorBrowsable(EditorBrowsableState.Always)>
+        Friend Sub SetTopLevelItemsExpanded(propGrid As PropertyGrid, expanded As Boolean)
+
+            If Not expanded Then
+                propGrid.CollapseAllGridItems()
+                Return
+            End If
+
+            Dim root As GridItem = PropertyGridExtensions.GetRootGridItem(propGrid)
+            For Each item As GridItem In root.GridItems
+                If item.Expandable Then
+                    item.Expanded = True
+                End If
+            Next
+
+        End Sub
+
+        ''' <summary>
+        ''' Returns the internal grid view control (<c>PropertyGridView</c>) of the source <see cref="PropertyGrid"/>,
+        ''' which is the control that contains the scroll bars.
+        ''' </summary>
+        '''
+        ''' <param name="propGrid">
+        ''' The source <see cref="PropertyGrid"/>.
+        ''' </param>
+        '''
+        ''' <returns>
+        ''' The internal grid view control.
+        ''' </returns>
+        <DebuggerStepThrough>
+        <Extension>
+        <EditorBrowsable(EditorBrowsableState.Always)>
+        Friend Function GetGridView(propGrid As PropertyGrid) As Control
+
+            Return PropertyGridExtensions.GetPropertyGridInternal(propGrid)
+
+        End Function
+
 #End Region
 
 #Region " Private Methods "
