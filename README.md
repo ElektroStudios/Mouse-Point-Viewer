@@ -79,7 +79,7 @@ I was tired of dealing with that exact friction, so I built this humble utility 
   <img src="Images/Screenshot_4.png" width="48%" />
   <br>
   <br>
-  <img src="Images/Mouse%20Point%20Viewer.gif" width="48%" />
+  <img src="Images/Mouse%20Point%20Viewer.gif" />
 </div>
 
 ## 📝 Requirements
