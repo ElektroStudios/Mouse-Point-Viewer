@@ -473,11 +473,11 @@ Partial Friend NotInheritable Class Main : Inherits Form
     <DebuggerStepThrough>
     Private Sub MainForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
-        ' Ctrl+C is kept as a local shortcut (when this window is focused) in addition to the global hotkey.
-        If e.Control AndAlso Not e.Alt AndAlso e.KeyCode = Keys.C Then
-            e.Handled = True
-            Me.CopyInfoToClipboard()
-        End If
+        '' Ctrl+C is kept as a local shortcut (when this window is focused) in addition to the global hotkey.
+        'If e.Control AndAlso Not e.Alt AndAlso e.KeyCode = Keys.C Then
+        '    e.Handled = True
+        '    Me.CopyInfoToClipboard()
+        'End If
     End Sub
 
     <DebuggerStepThrough>
