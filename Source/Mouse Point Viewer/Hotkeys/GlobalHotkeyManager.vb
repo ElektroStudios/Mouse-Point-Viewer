@@ -26,7 +26,7 @@ Imports Win32
 ''' The messages are received by a hidden message-only window, so the hotkeys work regardless of which window is focused.
 ''' This class must be created and used on a thread with a message loop (the UI thread).
 ''' </summary>
-Friend NotInheritable Class GlobalHotkeyManager : Inherits NativeWindow : Implements IDisposable
+Friend NotInheritable Class GlobalHotkeyManager : Inherits NativeWindow : Implements IDisposableUInteger ' NOSONAR
 
 #Region " Private Fields "
 

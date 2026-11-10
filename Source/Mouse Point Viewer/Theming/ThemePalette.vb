@@ -9,7 +9,7 @@ Option Infer Off
 ''' <summary>
 ''' Defines the colors of a visual theme of the application.
 ''' </summary>
-Friend NotInheritable Class ThemePalette
+Friend NotInheritable Class ThemePaletteUInteger ' NOSONAR
 
 #Region " Properties "
 

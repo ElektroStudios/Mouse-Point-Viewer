@@ -12,7 +12,7 @@ Option Infer Off
 ''' The values match the <c>MOD_*</c> values of the Win32 <c>RegisterHotKey</c> function.
 ''' </summary>
 <Flags>
-Friend Enum HotkeyModifiers As UInteger
+Friend Enum HotkeyModifiers As UInteger ' NOSONAR
 
     ''' <summary>
     ''' No modifier key.

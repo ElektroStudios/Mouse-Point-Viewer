@@ -22,7 +22,7 @@ Imports Win32
 ''' <summary>
 ''' Applies the visual themes (<see cref="AppTheme"/>) to the windows and controls of the application.
 ''' </summary>
-Friend Module ThemeManager
+Friend Module ThemeManagerUInteger ' NOSONAR
 
 #Region " Constants "
 

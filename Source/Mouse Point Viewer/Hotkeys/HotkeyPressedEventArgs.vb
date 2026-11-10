@@ -9,7 +9,7 @@ Option Infer Off
 ''' <summary>
 ''' Provides data for the <see cref="GlobalHotkeyManager.HotkeyPressed"/> event.
 ''' </summary>
-Friend NotInheritable Class HotkeyPressedEventArgs : Inherits EventArgs
+Friend NotInheritable Class HotkeyPressedEventArgs : Inherits EventArgsUInteger ' NOSONAR
 
 #Region " Properties "
 

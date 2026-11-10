@@ -9,7 +9,7 @@ Option Infer Off
 ''' <summary>
 ''' Specifies the visual theme of the application.
 ''' </summary>
-Friend Enum AppTheme As Integer
+Friend Enum AppTheme As IntegerUInteger ' NOSONAR
 
     ''' <summary>
     ''' The light theme (the original design of the application).

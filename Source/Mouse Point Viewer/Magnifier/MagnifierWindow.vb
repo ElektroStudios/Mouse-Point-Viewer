@@ -24,7 +24,7 @@ Imports Win32
 ''' The window never takes the focus, it is transparent to the mouse, it does not appear in the taskbar nor in Alt+Tab,
 ''' and it is always placed next to (never over) the captured screen area.
 ''' </summary>
-Friend NotInheritable Class MagnifierWindow : Inherits Form
+Friend NotInheritable Class MagnifierWindow : Inherits FormUInteger ' NOSONAR
 
 #Region " Constants "
 
