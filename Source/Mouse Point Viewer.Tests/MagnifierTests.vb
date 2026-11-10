@@ -217,12 +217,12 @@ Namespace MousePointViewer.Tests
             Using magnifier As New MagnifierWindow()
                 Assert.AreEqual(MagnifierGeometry.DefaultZoom, magnifier.Zoom)
 
-                For i As Integer = 1 To 20
+                For i As Integer = 1 To 100
                     magnifier.ZoomIn()
                 Next
                 Assert.AreEqual(MagnifierGeometry.MaxZoom, magnifier.Zoom)
 
-                For i As Integer = 1 To 20
+                For i As Integer = 1 To 100
                     magnifier.ZoomOut()
                 Next
                 Assert.AreEqual(MagnifierGeometry.MinZoom, magnifier.Zoom)

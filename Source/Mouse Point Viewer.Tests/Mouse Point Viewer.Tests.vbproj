@@ -22,7 +22,6 @@
     <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
     <PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
     <!-- Required at runtime to load the pre-serialized resources (e.g. the form icon) of the main assembly. -->
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>
