@@ -22,7 +22,7 @@ Imports Win32
 ''' <summary>
 ''' Applies the visual themes (<see cref="AppTheme"/>) to the windows and controls of the application.
 ''' </summary>
-Friend Module ThemeManagerUInteger ' NOSONAR
+Friend Module ThemeManager ' NOSONAR
 
 #Region " Constants "
 
@@ -456,7 +456,7 @@ End Module
 ''' <para></para>
 ''' Assign the value to the <see cref="Control.Tag"/> property of the label.
 ''' </summary>
-Friend Enum ThemeColorRole As Integer
+Friend Enum ThemeColorRole As Integer ' NOSONAR
 
     ''' <summary>
     ''' The label uses the primary text color (<see cref="ThemePalette.WindowFore"/>).
